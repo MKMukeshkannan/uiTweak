@@ -1,8 +1,9 @@
 "use client";
+
 import Selector from "@/components/Selector";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeColor, changeLength } from "./styleSlice";
+import { changeColor, changeLength, changeCss } from "./styleSlice";
 import Ping from "@/components/Ping";
 
 function Login() {
@@ -17,7 +18,7 @@ function Login() {
     <>
       <div
         style={{ background: main.background }}
-        className="flex flex-col h-screen"
+        className="main flex flex-col h-screen"
       >
         <nav
           style={{
@@ -25,7 +26,7 @@ function Login() {
             color: nav.color,
             height: nav.height.current,
           }}
-          className="relative flex h-24 items-center justify-between px-20"
+          className=" nav relative flex h-24 items-center justify-between px-20"
         >
           <h1 className=" text-xl font-black">YOUR LOGO</h1>
           <div>
@@ -43,7 +44,7 @@ function Login() {
               height: center.height.current,
               width: center.width.current,
             }}
-            className="relative border flex flex-col w-2/6 h-3/6 px-8 py-14 rounded-2xl	 rounded-md shadow-lg"
+            className="center relative border flex flex-col w-2/6 h-3/6 px-8 py-14 rounded-2xl shadow-lg"
           >
             <h1 className="mx-auto font-black text-3xl	mb-8">LOGIN</h1>
             <input
@@ -79,7 +80,22 @@ function Login() {
         dispatch={dispatch}
         changeColor={changeColor}
         changeLength={changeLength}
+        changeCss={changeCss}
       />
+      <style jsx>{`
+        .center {
+          ${center.css}
+        }
+        .nav {
+          ${nav.css}
+        }
+        .main {
+          ${main.css}
+        }
+        .button {
+          ${button.css}
+        }
+      `}</style>
     </>
   );
 }
