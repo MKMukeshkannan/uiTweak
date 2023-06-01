@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { AnimateDown } from "./StyledComponents/SelectorAnimation";
 import { changeCss } from "@/app/templates/login/styleSlice";
 
 interface State {
