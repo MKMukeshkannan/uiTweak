@@ -1,10 +1,11 @@
+import Templates from "@/app/templates/page";
 import { verifyJwtAcessToken } from "@/lib/jwt";
 import prisma from "@/lib/prisma";
 import { NextRequest } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { templateId: string } }
 ) {
   const accesstoken = request.headers.get("authorization");
   if (!accesstoken || !verifyJwtAcessToken(accesstoken)) {
@@ -13,18 +14,19 @@ export async function GET(
     });
   }
 
-  const userDetails = await prisma.user.findFirst({
+  const { id: sessionUserId } = verifyJwtAcessToken(accesstoken);
+
+  const tempDetails = await prisma.template.findFirst({
     where: {
-      id: params.id,
+      userId: sessionUserId,
+      id: params.templateId,
     },
-    include: {
-      saved: {
-        select: {
-          templatename: true,
-        },
-      },
+    select: {
+      id: true,
+      templatename: true,
+      style: true,
     },
   });
 
-  return new Response(JSON.stringify(userDetails));
+  return new Response(JSON.stringify(tempDetails));
 }
