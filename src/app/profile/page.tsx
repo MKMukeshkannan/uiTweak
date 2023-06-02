@@ -1,7 +1,70 @@
-import React from "react";
+"use client";
 
-function Profile() {
-  return <h1>Profile</h1>;
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
+
+import ProfileDetails from "@/components/ProfileDetails";
+import ProfileSaved from "@/components/ProfileSaved";
+
+function page() {
+  const { data: session } = useSession();
+  const token = session?.user.accesstoken;
+
+  const [template, setTemplate] = useState([]);
+
+  useEffect(() => {
+    async function fetchTemplate() {
+      const res = await fetch("http://localhost:3000/api/savetemplates", {
+        method: "GET",
+        headers: {
+          authorization: `bearer ${token}`,
+        },
+      });
+
+      const jsonResponse = await res.json();
+      setTemplate(jsonResponse);
+    }
+
+    if (session?.user.accesstoken) fetchTemplate();
+  }, [session?.user.accesstoken]);
+
+  console.log(template);
+  return (
+    <>
+      <section className="px-20">
+        <ProfileDetails name={session?.user.name ? session?.user.name : ""} />
+      </section>
+      <h1 className="text-6xl font-bold leading-none tracking-tight max-w-screen-xl mx-auto mb-12 text-[#077B79]">
+        YOUR SAVED FILES
+      </h1>
+      <main className="px-20 mb-20 flex flex-row flex-wrap gap-5 justify-center">
+        {template.length === 0 && (
+          <>
+            <div className="flex flex-col justify-center align-middle border border-solid border-black rounded-lg	 py-48 w-full">
+              <h1 className="text-[#7CA8A1] text-2xl mx-auto">NO SAVES YET </h1>
+              <h1 className="text-[#7CA8A1] text-2xl mx-auto mt-5">
+                Wanna Browse ?{" "}
+                <button
+                  type="button"
+                  className="text-white bg-[#077B79] w-48 font-medium rounded-lg text-sm px-2 py-2.5 "
+                >
+                  Look at your saved tweaks
+                </button>
+              </h1>
+            </div>
+          </>
+        )}
+        {template.map((val) => (
+          <ProfileSaved
+            key={val.id}
+            title={val.templatename}
+            image="https://elements-cover-images-0.imgix.net/02ee721f-68c5-4727-b8ac-e8af8cc22ab1?auto=compress%2Cformat&fit=max&w=900&s=c6cc0aa35e1f3fa464a73433b0f7ba81"
+            style={val.style}
+          />
+        ))}
+      </main>
+    </>
+  );
 }
 
-export default Profile;
+export default page;

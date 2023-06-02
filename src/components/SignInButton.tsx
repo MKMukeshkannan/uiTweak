@@ -7,7 +7,6 @@ function SignInButton() {
   const { data: session } = useSession();
 
   if (session && session?.user) {
-    console.log(session.user);
     return (
       <>
         <div className="flex flex-row">

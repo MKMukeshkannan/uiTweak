@@ -8,7 +8,8 @@ interface RequestBody {
 }
 
 export async function GET(request: NextRequest) {
-  const accesstoken = request.headers.get("authorization");
+  const accesstoken = request.headers.get("authorization")?.split(" ")[1];
+
   if (!accesstoken || !verifyJwtAcessToken(accesstoken)) {
     return new Response(JSON.stringify({ error: "unauthorized" }), {
       status: 401,
@@ -25,6 +26,7 @@ export async function GET(request: NextRequest) {
       select: {
         id: true,
         templatename: true,
+        style: true,
       },
     });
 
@@ -33,7 +35,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: Request) {
-  const accesstoken = request.headers.get("authorization");
+  const accesstoken = request.headers.get("authorization")?.split(" ")[1];
   if (!accesstoken || !verifyJwtAcessToken(accesstoken)) {
     return new Response(JSON.stringify({ error: "unauthorized" }), {
       status: 401,
@@ -53,4 +55,6 @@ export async function POST(request: Request) {
       },
     },
   });
+
+  return templateObj;
 }

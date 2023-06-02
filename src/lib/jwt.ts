@@ -22,7 +22,6 @@ export function verifyJwtAcessToken(token: string) {
     const decoded = jwt.verify(token, secret!);
     return decoded as JwtPayload;
   } catch (err) {
-    console.log(err);
     return null;
   }
 }
