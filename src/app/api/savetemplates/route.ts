@@ -36,6 +36,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: Request) {
   const accesstoken = request.headers.get("authorization")?.split(" ")[1];
+
   if (!accesstoken || !verifyJwtAcessToken(accesstoken)) {
     return new Response(JSON.stringify({ error: "unauthorized" }), {
       status: 401,
@@ -56,5 +57,5 @@ export async function POST(request: Request) {
     },
   });
 
-  return templateObj;
+  return new Response(JSON.stringify(templateObj));
 }
