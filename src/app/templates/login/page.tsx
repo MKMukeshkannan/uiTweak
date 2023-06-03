@@ -1,7 +1,7 @@
 "use client";
 
 import Selector from "@/components/Selector";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeColor, changeLength, changeCss } from "./styleSlice";
 import Ping from "@/components/Ping";
@@ -13,10 +13,12 @@ function Login() {
     (state: any) => state.styleSlice
   );
   const [content, setContent] = useState("nav");
+  const pageRef = useRef(null);
 
   return (
     <>
       <div
+        ref={pageRef}
         style={{ background: main.background }}
         className="main flex flex-col h-screen"
       >
@@ -77,6 +79,7 @@ function Login() {
       <Selector
         state={state}
         content={content}
+        ref={pageRef}
         dispatch={dispatch}
         changeColor={changeColor}
         changeLength={changeLength}

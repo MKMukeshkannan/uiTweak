@@ -11,11 +11,13 @@
   "dependencies": {
     "@prisma/client": "^4.15.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "@supabase/supabase-js": "^2.24.0",
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
     "bcrypt": "^5.1.0",
+    "html2canvas": "^1.4.1",
     "jsonwebtoken": "^9.0.0",
     "next": "^13.4.3",
     "next-auth": "^4.22.1",
@@ -30,6 +32,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/styled-components": "^5.1.26",
+    "encoding": "^0.1.13",
     "prisma": "^4.15.0"
   }
 }
