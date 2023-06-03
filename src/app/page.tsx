@@ -1,9 +1,12 @@
+import NavBar from "@/components/NavBar";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <>
+      <NavBar />
+
       <main className="flex relative mx-auto max-w-screen-xl text-center pb-32 h-[calc(100vh_-_120px)] justify-center items-center">
         <Image
           src="/homebg1.jpg"

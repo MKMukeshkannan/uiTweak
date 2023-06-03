@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { fetchall } from "@/lib/supabase";
+import NavBar from "@/components/NavBar";
 
 function Templates() {
   const [data, setData] = useState();
@@ -8,7 +9,12 @@ function Templates() {
     fetchall(setData);
   }, []);
   console.log(data);
-  return <div>Templates</div>;
+  return (
+    <>
+      <NavBar />
+      <div>Templates</div>
+    </>
+  );
 }
 
 export default Templates;

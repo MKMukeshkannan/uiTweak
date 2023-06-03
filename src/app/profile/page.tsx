@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 
 import ProfileDetails from "@/components/ProfileDetails";
 import ProfileSaved from "@/components/ProfileSaved";
+import NavBar from "@/components/NavBar";
 
 function page() {
   const { data: session } = useSession();
@@ -31,6 +32,8 @@ function page() {
   console.log(template);
   return (
     <>
+      <NavBar />
+
       <section className="px-20">
         <ProfileDetails name={session?.user.name ? session?.user.name : ""} />
       </section>
