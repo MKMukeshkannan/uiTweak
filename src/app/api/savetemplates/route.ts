@@ -3,6 +3,9 @@ import prisma from "@/lib/prisma";
 import { NextRequest } from "next/server";
 
 interface RequestBody {
+  id: string;
+  imgurl: string;
+  basetemplate: string;
   templatename: string;
   state: {};
 }
@@ -27,6 +30,8 @@ export async function GET(request: NextRequest) {
         id: true,
         templatename: true,
         style: true,
+        imgurl: true,
+        basetemplate: true,
       },
     });
 
@@ -47,6 +52,9 @@ export async function POST(request: Request) {
 
   const templateObj = await prisma.template.create({
     data: {
+      id: body.id,
+      basetemplate: body.basetemplate,
+      imgurl: body.imgurl,
       templatename: body.templatename,
       style: body.state,
       user: {

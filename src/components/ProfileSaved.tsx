@@ -1,4 +1,6 @@
 import React from "react";
+import Image from "next/image";
+
 interface State {
   [key: string]: { current: string; max: string; min: string } | any;
 }
@@ -8,8 +10,6 @@ interface Props {
   image: string;
   style: State;
 }
-
-interface obj {}
 
 export default function ProfileSaved({ title, image, style }: Props) {
   const arrOfSections: string[] = Object.keys(style);
@@ -23,7 +23,14 @@ export default function ProfileSaved({ title, image, style }: Props) {
   return (
     <div className="max-w-sm bg-white border border-gray-200 bg-opacity-30 backdrop-filter backdrop-blur-3xl rounded-lg shadow">
       <a href="#">
-        <img className="rounded-t-lg" src={image} alt="" />
+        <Image
+          width={400}
+          height={400}
+          style={{ objectFit: "cover" }}
+          alt={title}
+          className="rounded-t-lg"
+          src={image}
+        />
       </a>
       <div className="p-5 flex flex-row justify-between">
         <a href="#">

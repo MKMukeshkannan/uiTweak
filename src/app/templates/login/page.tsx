@@ -13,7 +13,7 @@ function Login() {
     (state: any) => state.styleSlice
   );
   const [content, setContent] = useState("nav");
-  const pageRef = useRef(null);
+  const pageRef = useRef<HTMLDivElement>(null);
 
   return (
     <>
@@ -80,6 +80,7 @@ function Login() {
         state={state}
         content={content}
         ref={pageRef}
+        baseTemplate="Login"
         dispatch={dispatch}
         changeColor={changeColor}
         changeLength={changeLength}
