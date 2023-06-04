@@ -1,7 +1,14 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
+import NavBar from "@/components/NavBar";
 
 function Templates() {
-  return <div>Templates</div>;
+  return (
+    <>
+      <NavBar />
+      <div>Templates</div>
+    </>
+  );
 }
 
 export default Templates;

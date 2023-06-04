@@ -1,16 +1,24 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
 import ProfileDetails from "@/components/ProfileDetails";
 import ProfileSaved from "@/components/ProfileSaved";
+import NavBar from "@/components/NavBar";
+
+interface Template {
+  id: string;
+  templatename: string;
+  imgurl: string;
+  style: {};
+}
 
 function page() {
   const { data: session } = useSession();
   const token = session?.user.accesstoken;
 
-  const [template, setTemplate] = useState([]);
+  const [template, setTemplate] = useState<Template[]>([]);
 
   useEffect(() => {
     async function fetchTemplate() {
@@ -22,7 +30,7 @@ function page() {
       });
 
       const jsonResponse = await res.json();
-      setTemplate(jsonResponse);
+      Array.isArray(jsonResponse) && setTemplate(jsonResponse);
     }
 
     if (session?.user.accesstoken) fetchTemplate();
@@ -31,6 +39,8 @@ function page() {
   console.log(template);
   return (
     <>
+      <NavBar />
+
       <section className="px-20">
         <ProfileDetails name={session?.user.name ? session?.user.name : ""} />
       </section>
@@ -58,7 +68,7 @@ function page() {
           <ProfileSaved
             key={val.id}
             title={val.templatename}
-            image="https://elements-cover-images-0.imgix.net/02ee721f-68c5-4727-b8ac-e8af8cc22ab1?auto=compress%2Cformat&fit=max&w=900&s=c6cc0aa35e1f3fa464a73433b0f7ba81"
+            image={val.imgurl}
             style={val.style}
           />
         ))}

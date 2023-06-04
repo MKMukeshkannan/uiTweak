@@ -9,13 +9,17 @@ interface RequestBody {
 
 export async function POST(request: Request) {
   const body: RequestBody = await request.json();
-  const userObj = await prisma.user.create({
-    data: {
-      name: body.name,
-      email: body.email,
-      password: await hash(body.password, 10),
-    },
-  });
-  const { password, ...result } = userObj;
-  return new Response(JSON.stringify(result));
+  try {
+    const userObj = await prisma.user.create({
+      data: {
+        name: body.name,
+        email: body.email,
+        password: await hash(body.password, 10),
+      },
+    });
+    const { password, ...result } = userObj;
+    return new Response(JSON.stringify(result));
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error }), { status: 401 });
+  }
 }
