@@ -1,10 +1,12 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 function Redirect() {
   const router = useRouter();
-  router.push("/templates/login/new");
+  useEffect(() => {
+    router.push("/templates/login/new");
+  }, []);
 
   return <div>Redirecting . . .</div>;
 }

@@ -12,6 +12,7 @@ import {
   fetchStyle,
 } from "./StateConfig/styleSlice";
 import { useAppDispatch } from "./StateConfig/store";
+import { useRouter } from "next/navigation";
 
 function Login({ params }: { params: { tempId: string } }) {
   const dispatch = useAppDispatch();
@@ -23,10 +24,14 @@ function Login({ params }: { params: { tempId: string } }) {
   const pageRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
   const token = session?.user.accesstoken;
+  const router = useRouter();
 
   useEffect(() => {
     const data = { tempId: params.tempId, token };
-    dispatch(fetchStyle(data));
+    params.tempId !== "new" &&
+      dispatch(fetchStyle(data)).catch((error) => {
+        router.push("/templates/login/new");
+      });
   }, [session?.user.accesstoken]);
 
   return (

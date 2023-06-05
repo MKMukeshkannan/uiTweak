@@ -38,6 +38,9 @@ export const fetchStyle = createAsyncThunk(
       }
     );
 
+    if (res.status === 403) throw Error("Forbidden");
+    if (!res.ok) throw Error("Unauthorized");
+
     return await res.json();
   }
 );
@@ -115,16 +118,15 @@ const styleSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchStyle.fulfilled, (state, action) => {
-      if (action.payload.error === "unauthorized") return;
-      console.log(action);
       state.nav = action.payload.style.nav;
       state.button = action.payload.style.button;
       state.main = action.payload.style.main;
       state.center = action.payload.style.center;
-    }),
-      builder.addCase(fetchStyle.rejected, (state, action) => {
-        console.log("Recovery Failed");
-      });
+    });
+    builder.addCase(fetchStyle.rejected, (state, action) => {
+      if (action.error.message === "Forbidden") throw Error("Forbidden");
+      // throw Error("Authorized");
+    });
   },
 });
 

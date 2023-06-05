@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-
+import { useRouter } from "next/navigation";
 import ProfileDetails from "@/components/ProfileDetails";
 import ProfileSaved from "@/components/ProfileSaved";
 import NavBar from "@/components/NavBar";
@@ -17,8 +17,8 @@ interface Template {
 function page() {
   const { data: session } = useSession();
   const token = session?.user.accesstoken;
-
   const [template, setTemplate] = useState<Template[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchTemplate() {
@@ -30,13 +30,16 @@ function page() {
       });
 
       const jsonResponse = await res.json();
-      Array.isArray(jsonResponse) && setTemplate(jsonResponse);
+      if (Array.isArray(jsonResponse)) {
+        setTemplate(jsonResponse);
+      } else {
+        router.push("/auth/signup");
+      }
     }
 
     if (session?.user.accesstoken) fetchTemplate();
   }, [session?.user.accesstoken]);
 
-  console.log(template);
   return (
     <>
       <NavBar />

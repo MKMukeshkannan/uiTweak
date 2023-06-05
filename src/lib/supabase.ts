@@ -1,10 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
 import html2canvas from "html2canvas";
 
-export const supabase = createClient(
-  "https://abolnjytttxdqfzduovc.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFib2xuanl0dHR4ZHFmemR1b3ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU1MzgyOTksImV4cCI6MjAwMTExNDI5OX0.Jr2gEhnOdbGRmb-rkW5v-zgrdcARrTjJDTzeRiPdWGw"
-);
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false,
+  },
+});
 
 export async function uploadScreenshot(
   componentRef: HTMLDivElement,

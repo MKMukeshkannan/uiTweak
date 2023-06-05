@@ -19,12 +19,12 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  const { id: sessionUserId } = verifyJwtAcessToken(accesstoken);
+  const payload = verifyJwtAcessToken(accesstoken);
 
-  if (sessionUserId) {
+  if (payload?.id) {
     const tempDetails = await prisma.template.findMany({
       where: {
-        userId: sessionUserId,
+        userId: payload?.id,
       },
       select: {
         id: true,
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
       status: 401,
     });
   }
-  const { id: sessionUserId } = verifyJwtAcessToken(accesstoken);
+  const payload = verifyJwtAcessToken(accesstoken);
   const body: RequestBody = await request.json();
 
   const templateObj = await prisma.template.create({
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
       style: body.state,
       user: {
         connect: {
-          id: sessionUserId,
+          id: payload?.id,
         },
       },
     },
