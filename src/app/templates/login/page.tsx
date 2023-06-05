@@ -1,19 +1,24 @@
 "use client";
 
 import Selector from "@/components/Selector";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeColor, changeLength, changeCss } from "./styleSlice";
+import { changeColor, changeLength, changeCss, fetchStyle } from "./styleSlice";
 import Ping from "@/components/Ping";
+import { useAppDispatch } from "./store";
 
 function Login() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const state = useSelector((state: any) => state.styleSlice);
   const { nav, center, main, button } = useSelector(
     (state: any) => state.styleSlice
   );
   const [content, setContent] = useState("nav");
   const pageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    dispatch(fetchStyle());
+  }, []);
 
   return (
     <>
