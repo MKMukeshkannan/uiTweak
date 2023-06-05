@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
 import ProfileDetails from "@/components/ProfileDetails";
@@ -67,6 +67,8 @@ function page() {
         {template.map((val) => (
           <ProfileSaved
             key={val.id}
+            base="login"
+            id={val.id}
             title={val.templatename}
             image={val.imgurl}
             style={val.style}

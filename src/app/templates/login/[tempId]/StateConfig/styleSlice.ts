@@ -25,19 +25,22 @@ const initialState = {
   },
 };
 
-export const fetchStyle = createAsyncThunk("style/fetch", async (thunkAPI) => {
-  const res = await fetch(
-    "http://localhost:3000/api/savetemplates/ecd324e5-56db-4144-9529-a571b67d4e94",
-    {
-      method: "GET",
-      headers: {
-        authorization: `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEzYzc1YThkLWU0NDMtNDFkMS1hOGEwLTlkN2I3NDFmMzU1ZSIsImVtYWlsIjoiY2hpa2FAc2VjcmF0YXJ5LmNvbSIsIm5hbWUiOiJDaGlrYSIsImlhdCI6MTY4NTk1MjgzNywiZXhwIjoxNjg1OTU2NDM3fQ.fUMyRuldNzH5vUvVynsP0JrotaP7QK2rnnZzIETEP4k`,
-      },
-    }
-  );
+export const fetchStyle = createAsyncThunk(
+  "style/fetch",
+  async (data: { tempId: string; token: string | undefined }) => {
+    const res = await fetch(
+      `http://localhost:3000/api/savetemplates/${data.tempId}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `bearer ${data.token}`,
+        },
+      }
+    );
 
-  return await res.json();
-});
+    return await res.json();
+  }
+);
 
 const styleSlice = createSlice({
   name: "styleSlice",
@@ -112,12 +115,16 @@ const styleSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchStyle.fulfilled, (state, action) => {
-      console.log(action.payload.style);
+      if (action.payload.error === "unauthorized") return;
+      console.log(action);
       state.nav = action.payload.style.nav;
-      (state.button = action.payload.style.button),
-        (state.center = action.payload.style.center),
-        (state.main = action.payload.style.main);
-    });
+      state.button = action.payload.style.button;
+      state.main = action.payload.style.main;
+      state.center = action.payload.style.center;
+    }),
+      builder.addCase(fetchStyle.rejected, (state, action) => {
+        console.log("Recovery Failed");
+      });
   },
 });
 

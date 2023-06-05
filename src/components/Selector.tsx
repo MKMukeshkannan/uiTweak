@@ -1,5 +1,4 @@
 import React, { forwardRef, useState } from "react";
-import { changeCss } from "@/app/templates/login/styleSlice";
 import { useSession } from "next-auth/react";
 import { uploadScreenshot } from "@/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
@@ -107,6 +106,7 @@ const Selector = forwardRef<HTMLDivElement, Props>(
       dispatch,
       changeColor,
       changeLength,
+      changeCss,
     },
     Pref
   ) => {

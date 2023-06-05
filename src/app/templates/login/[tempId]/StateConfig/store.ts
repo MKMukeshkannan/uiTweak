@@ -6,12 +6,6 @@ const store = configureStore({
   reducer: {
     styleSlice,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      thunk: {
-        extraArgument: "",
-      },
-    }),
 });
 
 export default store;
