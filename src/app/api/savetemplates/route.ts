@@ -20,22 +20,28 @@ export async function GET(request: NextRequest) {
   }
 
   const payload = verifyJwtAcessToken(accesstoken);
+  try {
+    if (payload?.id) {
+      const tempDetails = await prisma.template.findMany({
+        where: {
+          userId: payload?.id,
+        },
+        select: {
+          id: true,
+          templatename: true,
+          style: true,
+          imgurl: true,
+          basetemplate: true,
+        },
+      });
 
-  if (payload?.id) {
-    const tempDetails = await prisma.template.findMany({
-      where: {
-        userId: payload?.id,
-      },
-      select: {
-        id: true,
-        templatename: true,
-        style: true,
-        imgurl: true,
-        basetemplate: true,
-      },
+      return new Response(JSON.stringify(tempDetails));
+    }
+  } catch (error) {
+    console.log(error);
+    return new Response(JSON.stringify({ error: "InternalServerError" }), {
+      status: 500,
     });
-
-    return new Response(JSON.stringify(tempDetails));
   }
 }
 
@@ -49,21 +55,26 @@ export async function POST(request: Request) {
   }
   const payload = verifyJwtAcessToken(accesstoken);
   const body: RequestBody = await request.json();
-
-  const templateObj = await prisma.template.create({
-    data: {
-      id: body.id,
-      basetemplate: body.basetemplate,
-      imgurl: body.imgurl,
-      templatename: body.templatename,
-      style: body.state,
-      user: {
-        connect: {
-          id: payload?.id,
+  try {
+    const templateObj = await prisma.template.create({
+      data: {
+        id: body.id,
+        basetemplate: body.basetemplate,
+        imgurl: body.imgurl,
+        templatename: body.templatename,
+        style: body.state,
+        user: {
+          connect: {
+            id: payload?.id,
+          },
         },
       },
-    },
-  });
+    });
 
-  return new Response(JSON.stringify(templateObj));
+    return new Response(JSON.stringify(templateObj));
+  } catch (error) {
+    return new Response(JSON.stringify({ error: "InternalServerError" }), {
+      status: 500,
+    });
+  }
 }

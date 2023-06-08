@@ -24,16 +24,19 @@ export async function uploadScreenshot(
   const dataURL = canvas.toDataURL("image/jpeg", 0.5);
   const blob = await fetch(dataURL).then((res) => res.blob());
   const file = new File([blob], "component.jpeg", { type: blob.type });
-
-  const { data } = await supabase.storage
-    .from("templates")
-    .upload(`${userId}/${tempId}`, file);
-
-  if (data) {
-    const { data: imgLink } = supabase.storage
+  try {
+    const { data } = await supabase.storage
       .from("templates")
-      .getPublicUrl(`${userId}/${tempId}`);
-    return imgLink.publicUrl;
+      .upload(`${userId}/${tempId}`, file);
+
+    if (data) {
+      const { data: imgLink } = supabase.storage
+        .from("templates")
+        .getPublicUrl(`${userId}/${tempId}`);
+      return imgLink.publicUrl;
+    }
+    return "error";
+  } catch (error) {
+    return "error";
   }
-  return "error";
 }

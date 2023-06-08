@@ -1,10 +1,10 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
-import { signOut, useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
 
-function Signup() {
+const Login = () => {
   const {
     register,
     formState: { errors },
@@ -12,23 +12,18 @@ function Signup() {
     reset,
   } = useForm();
 
-  const { data: session } = useSession();
-  session?.user.id && signOut();
-
   async function onSubmit(data: {}) {
     try {
-      const res = await fetch("http://localhost:3000/api/user/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+      console.log(data);
+      const res = await signIn("credentials", {
+        ...data,
+        redirect: true,
+        callbackUrl: "/",
       });
-      res.status !== 200 && alert("INVALID INPUTS");
-      reset();
     } catch (error) {
       console.log(error);
     }
   }
-
   return (
     <>
       <main className="flex flex-col items-center justify-center h-screen px-36 pt-10 pb-24 2xl:px-72 2xl:py-36 max-sm:px-3">
@@ -37,30 +32,13 @@ function Signup() {
         </h1>
         <section className="flex flex-row h-full w-full shadow-2xl">
           <section className="pt-16 text-center bg-white bg-opacity-50 backdrop-filter backdrop-blur-3xl h-full w-1/2  2xl:pt-40 2xl:px-28 max-sm:w-full max-md:w-full">
-            <h1 className="text-5xl font-black tracking-normal text-[#077B79] ">
-              SIGN UP
+            <h1 className="text-5xl pb-3 font-black tracking-normal text-[#077B79] ">
+              LOGIN
             </h1>
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col items-center justify-center px-10 lg:px-5 max-sm:px-4"
             >
-              <input
-                type="text"
-                {...register("name", {
-                  required: true,
-                  minLength: 4,
-                  maxLength: 20,
-                })}
-                className="text-[#077B79] font-medium mb-1 mt-12 w-full h-12 px-5 text-xl  focus:outline-[#077B79] border border-solid border-gray-200 shadow-md"
-                placeholder="NAME"
-              />
-              <p className="mb-3 pl-3 text-red-400 self-start text-sm">
-                {errors.name?.type === "required" && "* Name Feild is required"}
-                {errors.name?.type === "minLength" &&
-                  "* Name should be atleast 4 characters"}
-                {errors.name?.type === "maxLength" &&
-                  "* Name should be less than 20 characters"}
-              </p>
               <input
                 type="text"
                 {...register("email", {
@@ -91,16 +69,16 @@ function Signup() {
                 type="submit"
                 className=" text-[#d3f1e9] bg-[#077b79] focus:ring-4 focus:ring-[#7ca8a2] font-medium rounded-lg text-m px-24 py-2.5 mt-8"
               >
-                SIGN UP
+                LOG IN
               </button>
             </form>
             <p className="text-[#7CA8A1] text-md px-28 mt-5 lg:text-sm lg:px-5 mb-5 max-sm:px-0 max-md:px-0">
               ALREADY HAVE AN ACCOUNT ?
               <Link
-                href="/auth/login"
+                href="/auth/signup"
                 className="hover:text-[#077b79] hover:shadow-md"
               >
-                LOG IN
+                SIGN UP
               </Link>
             </p>
           </section>
@@ -222,6 +200,6 @@ function Signup() {
       </main>
     </>
   );
-}
+};
 
-export default Signup;
+export default Login;

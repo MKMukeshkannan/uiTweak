@@ -15,22 +15,27 @@ export async function GET(
 
   const payload = verifyJwtAcessToken(accesstoken);
 
-  const tempDetails = await prisma.template.findFirst({
-    where: {
-      userId: payload?.id,
-      id: params.templateId,
-    },
-    select: {
-      id: true,
-      templatename: true,
-      style: true,
-    },
-  });
-  //console.log(tempDetails);
-
-  if (tempDetails === null)
-    return new Response(JSON.stringify({ error: "Forbidden" }), {
-      status: 403,
+  try {
+    const tempDetails = await prisma.template.findFirst({
+      where: {
+        userId: payload?.id,
+        id: params.templateId,
+      },
+      select: {
+        id: true,
+        templatename: true,
+        style: true,
+      },
     });
-  return new Response(JSON.stringify(tempDetails));
+
+    if (tempDetails === null)
+      return new Response(JSON.stringify({ error: "Forbidden" }), {
+        status: 403,
+      });
+    return new Response(JSON.stringify(tempDetails));
+  } catch (error) {
+    return new Response(JSON.stringify({ error: "InternalServerError" }), {
+      status: 500,
+    });
+  }
 }
