@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   nav: {
@@ -24,6 +24,26 @@ const initialState = {
     css: "",
   },
 };
+
+export const fetchStyle = createAsyncThunk(
+  "style/fetch",
+  async (data: { tempId: string; token: string | undefined }) => {
+    const res = await fetch(
+      `http://localhost:3000/api/savetemplates/${data.tempId}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `bearer ${data.token}`,
+        },
+      }
+    );
+
+    if (res.status === 403) throw Error("Forbidden");
+    if (!res.ok) throw Error("Unauthorized");
+
+    return await res.json();
+  }
+);
 
 const styleSlice = createSlice({
   name: "styleSlice",
@@ -95,6 +115,18 @@ const styleSlice = createSlice({
           break;
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchStyle.fulfilled, (state, action) => {
+      state.nav = action.payload.style.nav;
+      state.button = action.payload.style.button;
+      state.main = action.payload.style.main;
+      state.center = action.payload.style.center;
+    });
+    builder.addCase(fetchStyle.rejected, (state, action) => {
+      if (action.error.message === "Forbidden") throw Error("Forbidden");
+      // throw Error("Authorized");
+    });
   },
 });
 
