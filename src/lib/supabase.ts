@@ -15,7 +15,7 @@ export async function uploadScreenshot(
   userId: any,
   tempId: string
 ): Promise<string> {
-  if (componentRef === null) {
+  if (componentRef === null || userId === undefined) {
     console.log("null passed");
     return "error";
   }

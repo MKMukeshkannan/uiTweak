@@ -9,12 +9,13 @@ const Login = () => {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
   } = useForm();
 
   async function onSubmit(data: {}) {
     try {
-      console.log(data);
+      setTimeout(() => {
+        console.log(data);
+      }, 10000);
       const res = await signIn("credentials", {
         ...data,
         redirect: true,
