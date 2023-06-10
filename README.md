@@ -112,7 +112,7 @@ Project Link: [TODO](https://github.com/MKMukeshkannan/todo-app)
 <img src = "images/homepage.jpg" width = 500px>
 
 <h3>LOGIN PAGE</h3>
-<img src = "images/Loginpage.png"  width = 500px>
+<img src = "images/Loginpage.jpg"  width = 500px>
 
 <h3>SIGNUP PAGE</h3>
 <img src = "images/signup.jpg" width = 500px>
