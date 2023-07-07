@@ -76,8 +76,30 @@ I used the following frameworks/tools to build this project:
 Instruction to clone this reporsitory and setting it locally on your machine.
 
 ### Prerequisites
- WILL BE UPDATED SOON . . . .
-  
+ Node to be installed in the computer.
+ Create a project in Supabase and a storage bucket "templates" as public bucket with row-level-security. 
+
+### Installation
+ 1. Clone the repo
+    ```sh
+    git clone 
+    ```
+ 2. Run the command
+    ```sh
+    npm i
+    ```
+ 3. Create .env file and copy the given data from the supabase directory.
+ 4. Now run migrate commad
+    ```sh
+    npx prisma migrate dev --name init
+    npx prisma generate
+    ```
+    This will create required tables and relations in the database.
+  5. Run the app by,
+     ```sh
+     npm run dev
+     ```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -99,7 +121,7 @@ You can edit/view the saved template from your profile page..
 
 M K Mukesh Kannan - [@mukesh-kannan](https://www.linkedin.com/in/mukesh-kannan-mk/) - mukeshkannan311@gmail.com
 
-Project Link: [TODO](https://github.com/MKMukeshkannan/todo-app)
+Project Link: [TODO](https://github.com/MKMukeshkannan/uiTweak)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
