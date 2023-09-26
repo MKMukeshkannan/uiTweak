@@ -55,7 +55,7 @@ function Signup() {
                 placeholder="NAME"
               />
               <p className="mb-3 pl-3 text-red-400 self-start text-sm">
-                {errors.name?.type === "required" && "* Name Feild is required"}
+                {errors.name?.type === "required" && "* Name Field is required"}
                 {errors.name?.type === "minLength" &&
                   "* Name should be atleast 4 characters"}
                 {errors.name?.type === "maxLength" &&
@@ -72,7 +72,7 @@ function Signup() {
               />
               <p className="mb-3 pl-3 text-red-400 self-start text-sm">
                 {errors.email?.type === "required" &&
-                  "* Email Feild is required"}
+                  "* Email Field is required"}
                 {errors.email?.type === "pattern" && "* Email is Invalid"}
               </p>
               <input
@@ -83,9 +83,9 @@ function Signup() {
               />
               <p className="mb-3 pl-3 text-red-400 self-start text-sm">
                 {errors.password?.type === "required" &&
-                  "* Password Feild is required"}
+                  "* Password Field is required"}
                 {errors.password?.type === "minLength" &&
-                  "* Password should be atleast 8 characters"}
+                  "* Password should be atleast 8 characters"} 
               </p>
               <button
                 type="submit"
